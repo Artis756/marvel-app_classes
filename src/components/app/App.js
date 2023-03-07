@@ -4,21 +4,24 @@ import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 
 import decoration from '../../resources/img/vision.png';
+import MarvelService from "../../services/MarvelService";
 
+
+new MarvelService().getCharacter(1017295)
 const App = () => {
-    return (
-        <div className="app">
-            <AppHeader/>
-            <main>
-                <RandomChar/>
-                <div className="char__content">
-                    <CharList/>
-                    <CharInfo/>
-                </div>
-                <img className="bg-decoration" src={decoration} alt="vision"/>
-            </main>
-        </div>
-    )
+	return (
+		<div className="app">
+			<AppHeader />
+			<main>
+				<RandomChar />
+				<div className="char__content">
+					<CharList />
+					<CharInfo />
+				</div>
+				<img className="bg-decoration" src={decoration} alt="vision" />
+			</main>
+		</div>
+	)
 }
 
 export default App;
