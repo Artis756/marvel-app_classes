@@ -6,10 +6,7 @@ class MarvelService {
 	getData = async (url) => {
 		const response = await fetch(url);
 
-		if (!response.ok) {
-			console.log('ошибка');
-			throw new Error(`Could not fetch ${url}, status: ${response.status}`);
-		}
+		if (!response.ok) throw new Error(`Could not fetch ${url}, status: ${response.status}`);
 
 		return await response.json()
 	}
@@ -33,6 +30,7 @@ class MarvelService {
 			thumbnail: `${char.thumbnail.path}.${char.thumbnail.extension}`,
 			wiki: char.urls[0].url,
 			homepage: char.urls[1].url,
+			comics: char.comics.items.length !== 0 ? char.comics.items.slice(0, 10) : []
 		}
 	}
 
