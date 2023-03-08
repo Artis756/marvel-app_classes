@@ -6,7 +6,10 @@ class MarvelService {
 	getData = async (url) => {
 		const response = await fetch(url);
 
-		if (!response.ok) throw new Error(`Could not fetch ${url}, status: ${response.status}`);
+		if (!response.ok) {
+			console.log('ошибка');
+			throw new Error(`Could not fetch ${url}, status: ${response.status}`);
+		}
 
 		return await response.json()
 	}
