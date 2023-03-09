@@ -1,11 +1,12 @@
 import './charInfo.scss';
-import thor from '../../resources/img/thor.jpeg';
+
 import { Component } from 'react';
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/spinner';
 import Error from '../error/error';
 import Skeleton from '../skeleton/Skeleton';
 
+import PropTypes from 'prop-types'
 class CharInfo extends Component {
 	state = {
 		char: {},
@@ -103,6 +104,10 @@ const View = ({ name, description, thumbnail, homepage, wiki, comics }) => {
 				{comics.length !== 0 ? comicsList : "There are no comics"}
 			</ul></>
 	)
+}
+
+CharInfo.propTypes = {
+	charId: PropTypes.number
 }
 
 export default CharInfo;
