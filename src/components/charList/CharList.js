@@ -14,7 +14,7 @@ class CharList extends Component {
 		offset: 193,
 		charsEnded: false
 	}
-
+	itemsRefs = [];
 	marvelService = new MarvelService();
 
 	onCharsLoading = () => {
@@ -52,11 +52,46 @@ class CharList extends Component {
 		this.onRequest();
 	}
 
+	componentWillUnmount() {
+		this.itemsRefs = null;
+	}
+
+	onFocus = (index) => {
+		this.itemsRefs.map(item => item.classList.remove('char__item_selected'))
+		this.itemsRefs[index].classList.add('char__item_selected')
+	}
+
+	itemRef = elem => { this.itemsRefs.push(elem) }
+
+	createItems = (chars) => {
+		const { onCharSelected } = this.props;
+		const keyboardHandler = (e, index, id) => {
+			if (e.code === 'Space' || e.code === 'Enter') {
+				e.preventDefault();
+				this.onFocus(index);
+				onCharSelected(id);
+			}
+		}
+
+		return chars.map((item, index) => {
+			return (
+				<li className="char__item"
+					onClick={() => { onCharSelected(item.id); this.onFocus(index) }}
+					onKeyDown={(e) => keyboardHandler(e, index, item.id)}
+					tabIndex="0"
+					key={item.id}
+					ref={this.itemRef}>
+					<img src={item.thumbnail} alt="abyss" />
+					<div className="char__name">{item.name}</div>
+				</li>
+			)
+		})
+	}
+
 	render() {
 		const { chars, loading, error, newItemsLoading, offset, charsEnded } = this.state;
-		const { onCharSelected } = this.props;
 
-		const items = chars.map(item => <View {...item} key={item.id} onCharSelected={() => onCharSelected(item.id)} />)
+		const items = this.createItems(chars)
 
 		const loadingComponent = loading ? <Spinner /> : null;
 		const errorComponent = error ? <Error /> : null;
@@ -80,16 +115,6 @@ class CharList extends Component {
 	}
 }
 
-
-const View = ({ thumbnail, name, onCharSelected }) => {
-	return (
-		<li className="char__item"
-			onClick={onCharSelected}>
-			<img src={thumbnail} alt="abyss" />
-			<div className="char__name">{name}</div>
-		</li>
-	)
-}
 CharList.propTypes = {
 	onCharSelected: PropTypes.func.isRequired
 }
